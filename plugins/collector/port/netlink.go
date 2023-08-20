@@ -37,6 +37,8 @@ type inetDiagReq struct {
 	id       sockid
 }
 
+// Serialize serialize inet_diag request
+// https://man7.org/linux/man-pages/man7/sock_diag.7.html
 func (r *inetDiagReq) Serialize() []byte {
 	buf := bytes.NewBuffer(make([]byte, 0, sizeofinetDiagReq))
 	buf.WriteByte(r.family)
@@ -54,7 +56,7 @@ func (r *inetDiagReq) Serialize() []byte {
 	}
 	buf.Write(r.id.dip)
 	if len(r.id.dip) < 16 {
-		for i := 0; i < 16-len(r.id.sip); i++ {
+		for i := 0; i < 16-len(r.id.dip); i++ {
 			buf.WriteByte(0)
 		}
 	}
